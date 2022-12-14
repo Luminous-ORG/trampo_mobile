@@ -1,0 +1,68 @@
+<div style="width: 100%;" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+	<div class="offcanvas-header">
+		<h5 id="offcanvasRightLabel">Currículo</h5>
+		<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+    <div class="offcanvas-body">
+		<div class="main-cad">   
+	
+			 <div class="container">
+	            <canvas style="width:100%" id="the-canvas"></canvas>
+	            <!--<iframe src="../cv/teste2.php" width="100%" height="100%" title="CV"></iframe>-->
+	          </div>
+	          <br>
+	          <div style="text-align:center;">
+			    <a href="../cv/cv-pdf.php" class="btn btn-success">Baixar</a>
+			  </div>
+    
+    	</div>
+  	</div>
+</div>
+
+
+
+<script src="../cv/build/pdf.js"></script>
+<script type="text/javascript">
+	var url = '../cv/cv-pdf.php';
+
+///app/Area_restrita/editar_perfil/cv-pdf.php
+// Loaded via <script> tag, create shortcut to access PDF.js exports.
+	var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+	// The workerSrc property shall be specified.
+	pdfjsLib.GlobalWorkerOptions.workerSrc = '../cv/build/pdf.worker.js';
+
+	// Asynchronous download of PDF
+	var loadingTask = pdfjsLib.getDocument(url);
+	loadingTask.promise.then(function(pdf) {
+	console.log('PDF loaded');
+
+	// Fetch the first page
+	var pageNumber = 1;
+	pdf.getPage(pageNumber).then(function(page) {
+	  console.log('Page loaded');
+	  
+	  var scale = 1.5;
+	  var viewport = page.getViewport({scale: scale});
+
+	  // Prepare canvas using PDF page dimensions
+	  var canvas = document.getElementById('the-canvas');
+	  var context = canvas.getContext('2d');
+	  canvas.height = viewport.height;
+	  canvas.width = viewport.width;
+
+	  // Render PDF page into canvas context
+	  var renderContext = {
+	    canvasContext: context,
+	    viewport: viewport
+	  };
+	  var renderTask = page.render(renderContext);
+	  renderTask.promise.then(function () {
+	    console.log('Page rendered');
+	  });
+	});
+	}, function (reason) {
+	// PDF loading error
+	console.error(reason);
+	});
+</script>

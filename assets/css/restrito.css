@@ -1,0 +1,19 @@
+body{
+    background: f3f3f3de/*f3f3f3de #201b2c*/;
+   
+}
+
+
+.image{
+	text-align: center;
+	margin-top: 50px;
+	
+}
+
+#img_redonda{
+	background-color: white;
+	padding: 2px;
+	border: 2px solid #006eff;
+	border-radius: 100%;
+	object-fit: cover;
+}
